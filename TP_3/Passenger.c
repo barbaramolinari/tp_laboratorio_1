@@ -10,9 +10,9 @@
 #include "Passenger.h"
 
 /**
- * @brief
+ * @brief crea espacio en memoria para un nuevo pasajero
  *
- * @return
+ * @return devuelve el espacio en memoria reservado o NULL en caso de no haber podido reservarlo
  */
 Passenger* Passenger_new() {
 	Passenger* pPassenger = NULL;
@@ -30,16 +30,20 @@ Passenger* Passenger_new() {
 }
 
 /**
- * @brief
+ * @brief Constructor de parámetros en modo texto. Setea todos los datos del pasajero.
  *
  * @param idStr
  * @param nombreStr
+ * @param apellidoStr
+ * @param precioStr
+ * @param codigoVueloStr
  * @param tipoPasajeroStr
- * @return
+ * @param estadoVueloStr
+ * @return retorna NULL si no hay espacio o un puntero al espacio de memoria
  */
 Passenger* Passenger_newParametros(char* idStr,char* nombreStr, char* apellidoStr, char* precioStr,
 		char* codigoVueloStr, char* tipoPasajeroStr,  char* estadoVueloStr) {
-	Passenger* pPassenger;
+	Passenger* pPassenger = NULL;
 	pPassenger = Passenger_new();
 	int idStrAux;
 	float precioStrAux;
@@ -59,13 +63,45 @@ Passenger* Passenger_newParametros(char* idStr,char* nombreStr, char* apellidoSt
 		Passenger_setTipoPasajero(pPassenger, tipoPasajeroStrAux);
 		Passenger_setCodigoVuelo(pPassenger, codigoVueloStr);
 		Passenger_setEstadoVuelo(pPassenger, estadoVueloStrAux);
-		Passenger_delete(pPassenger);
 	}
 	return pPassenger;
 }
 
+
 /**
- * @brief
+ * @brief Constructor de parámetros en los tipos que trae la estructura. Setea todos los datos del pasajero.
+ *
+ * @param id
+ * @param nombreStr
+ * @param apellidoStr
+ * @param precio
+ * @param codigoVueloStr
+ * @param tipoPasajero
+ * @param estadoVuelo
+ * @return retorna NULL si no hay espacio o un puntero al espacio de memoria
+ */
+Passenger* Passenger_newParamTipo(int id,char* nombreStr, char* apellidoStr, float precio,
+		char* codigoVueloStr, int tipoPasajero,  int estadoVuelo) {
+	Passenger* pPassenger = NULL;
+	pPassenger = Passenger_new();
+
+	if (pPassenger != NULL) {
+
+
+		Passenger_setId(pPassenger, id);
+		Passenger_setNombre(pPassenger, nombreStr);
+		Passenger_setApellido(pPassenger, apellidoStr);
+		Passenger_setPrecio(pPassenger, precio);
+		Passenger_setTipoPasajero(pPassenger, tipoPasajero);
+		Passenger_setCodigoVuelo(pPassenger, codigoVueloStr);
+		Passenger_setEstadoVuelo(pPassenger, estadoVuelo);
+	}
+	return pPassenger;
+}
+
+
+/**
+ * @brief elimina un pasajero para liberar el espacio en memoria
  *
  * @param this
  */
@@ -76,11 +112,11 @@ void Passenger_delete(Passenger* this){
 }
 
 /**
- * @brief
+ * @brief setea el id en el campo del pasajero
  *
  * @param this
  * @param id
- * @return
+ * @return devuelve 0 en caso de exito o -1 en caso de error.
  */
 int Passenger_setId(Passenger* this,int id){
 	int retorno = -1;
@@ -92,11 +128,11 @@ int Passenger_setId(Passenger* this,int id){
 }
 
 /**
- * @brief
+ * @brief obtiene el id del campo del pasajero
  *
  * @param this
  * @param id
- * @return
+ * @return devuelve 0 en caso de exito o -1 en caso de error.
  */
 int Passenger_getId(Passenger* this,int* id){
 	int retorno = -1;
@@ -109,11 +145,11 @@ int Passenger_getId(Passenger* this,int* id){
 
 
 /**
- * @brief
+ * @brief setea el nombre en el campo del pasajero
  *
  * @param this
  * @param nombre
- * @return
+ * @return devuelve 0 en caso de exito o -1 en caso de error.
  */
 int Passenger_setNombre(Passenger* this,char* nombre){
 	int retorno = -1;
@@ -125,11 +161,11 @@ int Passenger_setNombre(Passenger* this,char* nombre){
 }
 
 /**
- * @brief
+ * @brief obtiene el nombre del campo del pasajero
  *
  * @param this
  * @param nombre
- * @return
+ * @return devuelve 0 en caso de exito o -1 en caso de error.
  */
 int Passenger_getNombre(Passenger* this,char* nombre){
 	int retorno = -1;
@@ -141,11 +177,11 @@ int Passenger_getNombre(Passenger* this,char* nombre){
 }
 
 /**
- * @brief
+ * @brief setea el apellido en el campo del pasajero
  *
  * @param this
  * @param apellido
- * @return
+ * @return devuelve 0 en caso de exito o -1 en caso de error.
  */
 int Passenger_setApellido(Passenger* this,char* apellido){
 	int retorno = -1;
@@ -157,11 +193,11 @@ int Passenger_setApellido(Passenger* this,char* apellido){
 }
 
 /**
- * @brief
+ * @brief obtiene el apellido del campo del pasajero
  *
  * @param this
  * @param apellido
- * @return
+ * @return devuelve 0 en caso de exito o -1 en caso de error.
  */
 int Passenger_getApellido(Passenger* this,char* apellido){
 	int retorno = -1;
@@ -173,11 +209,11 @@ int Passenger_getApellido(Passenger* this,char* apellido){
 }
 
 /**
- * @brief
+ * @brief setea el codigo de vuelo en el campo del pasajero
  *
  * @param this
  * @param codigoVuelo
- * @return
+ * @return devuelve 0 en caso de exito o -1 en caso de error.
  */
 int Passenger_setCodigoVuelo(Passenger* this,char* codigoVuelo){
 	int retorno = -1;
@@ -189,11 +225,11 @@ int Passenger_setCodigoVuelo(Passenger* this,char* codigoVuelo){
 }
 
 /**
- * @brief
+ * @brief obtiene el codigo de vuelo del campo del pasajero
  *
  * @param this
  * @param codigoVuelo
- * @return
+ * @return devuelve 0 en caso de exito o -1 en caso de error.
  */
 int Passenger_getCodigoVuelo(Passenger* this,char* codigoVuelo){
 	int retorno = -1;
@@ -205,11 +241,11 @@ int Passenger_getCodigoVuelo(Passenger* this,char* codigoVuelo){
 }
 
 /**
- * @brief
+ * @brief setea el tipo de pasajero en el campo del pasajero
  *
  * @param this
  * @param tipoPasajero
- * @return
+ * @return devuelve 0 en caso de exito o -1 en caso de error.
  */
 int Passenger_setTipoPasajero(Passenger* this,int tipoPasajero){
 	int retorno = -1;
@@ -221,11 +257,11 @@ int Passenger_setTipoPasajero(Passenger* this,int tipoPasajero){
 }
 
 /**
- * @brief
+ * @brief obtiene el tipo de pasajero del campo del pasajero
  *
  * @param this
  * @param tipoPasajero
- * @return
+ * @return devuelve 0 en caso de exito o -1 en caso de error.
  */
 int Passenger_getTipoPasajero(Passenger* this,int* tipoPasajero){
 	int retorno = -1;
@@ -237,11 +273,11 @@ int Passenger_getTipoPasajero(Passenger* this,int* tipoPasajero){
 }
 
 /**
- * @brief
+ * @brief setea el precio en el campo del pasajero
  *
  * @param this
  * @param precio
- * @return
+ * @return devuelve 0 en caso de exito o -1 en caso de error.
  */
 int Passenger_setPrecio(Passenger* this,float precio){
 	int retorno = -1;
@@ -253,11 +289,11 @@ int Passenger_setPrecio(Passenger* this,float precio){
 }
 
 /**
- * @brief
+ * @brief obtiene el precio del campo del pasajero
  *
  * @param this
  * @param precio
- * @return
+ * @return devuelve 0 en caso de exito o -1 en caso de error.
  */
 int Passenger_getPrecio(Passenger* this,float* precio){
 	int retorno = -1;
@@ -269,11 +305,11 @@ int Passenger_getPrecio(Passenger* this,float* precio){
 }
 
 /**
- * @brief
+ * @brief imprime un pasajero que se encuentra en un indice puntual
  *
  * @param pArrayListPassenger
  * @param index
- * @return
+ * @return devuelve 0 en caso de exito o -1 en caso de error.
  */
 int Passenger_printPassenger(LinkedList* pArrayListPassenger, int index){
 
@@ -285,8 +321,6 @@ int Passenger_printPassenger(LinkedList* pArrayListPassenger, int index){
 	char codigoVuelo[50];
 	int tipoPasajero;
 	int estadoVuelo;
-	char auxIdStr[50];
-	char auxPrecioStr[50];
 	char auxTipoPasajeroStr[50];
 	char auxEstadoVueloStr[50];
 
@@ -304,13 +338,12 @@ int Passenger_printPassenger(LinkedList* pArrayListPassenger, int index){
 		Passenger_getTipoPasajero(pPassenger, &tipoPasajero);
 		Passenger_getEstadoVuelo(pPassenger, &estadoVuelo);
 
-		//casteo
-		sprintf(auxIdStr,"%d", id);
-		sprintf(auxPrecioStr,"%2.0f", precio);
-		Passenger_convierteTipoVueloEnChar(&tipoPasajero, auxTipoPasajeroStr);
-		Passenger_convierteEstadoVueloEnChar(&estadoVuelo, auxEstadoVueloStr);
 
-		printf("|%*s|%*s|%*s|%*s|%*s|%*s|%*s|\n", -13, auxIdStr, -20, nombre, -20, apellido, -13, auxPrecioStr, -13, codigoVuelo, -20, auxTipoPasajeroStr, -20, auxEstadoVueloStr);
+		Passenger_convierteTipoVueloEnChar(tipoPasajero, auxTipoPasajeroStr);
+		Passenger_convierteEstadoVueloEnChar(estadoVuelo, auxEstadoVueloStr);
+
+		printf("|%*d|%*s|%*s|%*.2f|%*s|%*s|%*s|\n", -13, id, -20, nombre, -20, apellido, -13, precio, -13, codigoVuelo,
+				-20, auxTipoPasajeroStr, -20, auxEstadoVueloStr);
 
 		retorno = 0;
 	}
@@ -319,16 +352,16 @@ int Passenger_printPassenger(LinkedList* pArrayListPassenger, int index){
 
 
 /**
- * @brief
+ * @brief muestra por pantalla el encabezado de la lista
  *
  */
 void Passenger_Encabezado(){
 
-	printf("\n|%*s|%*s|%*s|%*s|%*s|%*s|%*s|\n",-13,"ID",-20, "Nombre", -20, "Apellido", -13, "Precio", -13, "FlyCode", -20, "Clase", -20, "Estado \n\n");
+	printf("\n|%*s|%*s|%*s|%*s|%*s|%*s|%*s|\n",-13,"ID",-20, "Nombre", -20, "Apellido", -13, "Precio", -13, "FlyCode", -20, "Clase", -20, "Estado");
 }
 
 /***
- * @brief Muestra por pantalla el men de opciones
+ * @brief Muestra por pantalla el menu principal de opciones
  *
  */
 void Passenger_MenuPrincipal(){
@@ -346,7 +379,7 @@ void Passenger_MenuPrincipal(){
 }
 
 /***
- * @brief Muestra por pantalla el menu de opciones
+ * @brief Muestra por pantalla el menu con opciones de modificacion
  *
  */
 void Passenger_SubMenu(){
@@ -354,33 +387,34 @@ void Passenger_SubMenu(){
 		printf("1- Modificar nombre: \n");
 		printf("2- Modificar apellido: \n");
 		printf("3- Modificar precio: \n");
-		printf("4- Modificar tipo pasajero: \n");
-		printf("5- Modificar codigo de vuelo: \n");
+		printf("4- Modificar codigo de vuelo: \n");
+		printf("5- Modificar tipo pasajero: \n");
 		printf("6- Modificar estado de vuelo: \n");
 		printf("7- Regresar al menu principal. \n");
 }
 
 /***
- * @brief Muestra por pantalla el menu de opciones
+ * @brief Muestra por pantalla el menu con opciones de ordenamiento
  *
  */
 void Passenger_MenuOrdenamiento(){
 	printf("********** Menu de Ordenamiento ********** \n\n");
-		printf("1- Ordenar por nombre: \n");
-		printf("2- Ordenar por apellido: \n");
-		printf("3- Ordenar por  precio: \n");
-		printf("4- Ordenar por tipo pasajero: \n");
+		printf("1- Ordenar por id: \n");
+		printf("2- Ordenar por nombre: \n");
+		printf("3- Ordenar por apellido: \n");
+		printf("4- Ordenar por precio: \n");
 		printf("5- Ordenar por codigo de vuelo: \n");
-		printf("6- Ordenar por estado de vuelo: \n");
-		printf("7- Regresar al menu principal. \n");
+		printf("6- Ordenar por tipo pasajero: \n");
+		printf("7- Ordenar por estado de vuelo: \n");
+		printf("8- Regresar al menu principal. \n");
 }
 
 /**
- * @brief
+ * @brief setea el estado de vuelo en el campo del pasajero
  *
  * @param this
  * @param estadoVuelo
- * @return
+ * @return devuelve 0 en caso de exito o -1 en caso de error.
  */
 int Passenger_setEstadoVuelo(Passenger* this,int estadoVuelo){
 	int retorno = -1;
@@ -392,11 +426,11 @@ int Passenger_setEstadoVuelo(Passenger* this,int estadoVuelo){
 }
 
 /**
- * @brief
+ * @brief obtiene el estado de vuelo del campo del pasajero
  *
  * @param this
  * @param estadoVuelo
- * @return
+ * @return devuelve 0 en caso de exito o -1 en caso de error.
  */
 int Passenger_getEstadoVuelo(Passenger* this,int* estadoVuelo){
 	int retorno = -1;
@@ -408,10 +442,10 @@ int Passenger_getEstadoVuelo(Passenger* this,int* estadoVuelo){
 }
 
 /**
- * @brief
+ * @brief convierte el tipo de vuelo de texto a entero
  *
  * @param tipoPasajero
- * @return
+ * @return devuelve el tipo de pasajero como int en caso de exito, o -1 en caso de error
  */
 int Passenger_convierteTipoVueloEnInt(char* tipoPasajero) {
 
@@ -427,7 +461,7 @@ int Passenger_convierteTipoVueloEnInt(char* tipoPasajero) {
 		auxTipoPasajero = 3;
 
 	} else {
-		auxTipoPasajero = -1; // si hay error devuelve -1
+		auxTipoPasajero = -1;
 	}
 
 	return auxTipoPasajero;
@@ -435,10 +469,10 @@ int Passenger_convierteTipoVueloEnInt(char* tipoPasajero) {
 
 
 /**
- * @brief
+ * @brief convierte el estado de vuelo de texto a entero
  *
  * @param estadoVuelo
- * @return
+ * @return devuelve el estado de vuelo como int en caso de exito o -1 en caso de error.
  */
 int Passenger_convierteEstadoVueloEnInt(char* estadoVuelo) {
 
@@ -457,66 +491,33 @@ int Passenger_convierteEstadoVueloEnInt(char* estadoVuelo) {
 		auxEstadoVuelo = 4;
 
 	} else {
-		auxEstadoVuelo = -1; // si hay error devuelve -1
+		auxEstadoVuelo = -1;
 	}
 
 	return auxEstadoVuelo;
 
 }
 
-
 /**
- * @brief
- *
- * @param pArrayListPassenger
- * @return
- */
-int Passenger_getMaxId(LinkedList* pArrayListPassenger) {
-	int retorno = -1;
-	int i;
-	int largo;
-	int auxId;
-	int maxId = 0;
-
-	Passenger* pPassenger;
-
-	if (pArrayListPassenger != NULL) {
-		largo = ll_len(pArrayListPassenger);
-
-		for (i = 0; i < largo; i++) {
-			pPassenger = (Passenger*) ll_get (pArrayListPassenger, i);
-			Passenger_getId(pPassenger, &auxId);
-
-			if (maxId < auxId) {
-				maxId = auxId;
-			}
-		}
-		retorno = maxId;
-	}
-
-	return retorno;
-}
-
-/**
- * @brief
+ * @brief convierte el tipo de pasajero de entero a texto
  *
  * @param tipoPasajero
- * @return
+ * @return devuelve 0 en caso de exito o -1 en caso de error.
  */
-int Passenger_convierteTipoVueloEnChar(int* tipoPasajero, char* auxTipoPasajero) {
+int Passenger_convierteTipoVueloEnChar(int tipoPasajero, char* auxTipoPasajero) {
 
 	int retorno = -1;
 
-	if(*tipoPasajero == 1){
-		auxTipoPasajero = "FirstClass";
+	if(tipoPasajero == 1){
+		strcpy (auxTipoPasajero, "FirstClass");
 		retorno = 0;
 
-	} else if(*tipoPasajero == 2){
-		auxTipoPasajero = "ExecutiveClass";
+	} else if(tipoPasajero == 2){
+		strcpy (auxTipoPasajero, "ExecutiveClass");
 		retorno = 0;
 
-	} else if(*tipoPasajero == 3){
-		auxTipoPasajero = "EconomyClass";
+	} else if(tipoPasajero == 3){
+		strcpy (auxTipoPasajero, "EconomyClass");
 		retorno = 0;
 
 	}
@@ -526,29 +527,29 @@ int Passenger_convierteTipoVueloEnChar(int* tipoPasajero, char* auxTipoPasajero)
 
 
 /**
- * @brief
+ * @brief convierte el estado de vuelo de entero a texto
  *
  * @param estadoVuelo
- * @return
+ * @return devuelve 0 en caso de exito o -1 en caso de error.
  */
-int Passenger_convierteEstadoVueloEnChar(int* estadoVuelo, char* auxEstadoVuelo) {
+int Passenger_convierteEstadoVueloEnChar(int estadoVuelo, char* auxEstadoVuelo) {
 
 	int retorno = -1;
 
-	if(*estadoVuelo == 1){
-		auxEstadoVuelo = "En Horario";
+	if(estadoVuelo == 1){
+		strcpy(auxEstadoVuelo, "En Horario");
 		retorno = 0;
 
-	} else if(*estadoVuelo == 2){
-		auxEstadoVuelo = "En Vuelo";
+	} else if(estadoVuelo == 2){
+		strcpy(auxEstadoVuelo, "En Vuelo");
 		retorno = 0;
 
-	} else if(*estadoVuelo == 3){
-		auxEstadoVuelo = "Aterrizado";
+	} else if(estadoVuelo == 3){
+		strcpy(auxEstadoVuelo, "Aterrizado");
 		retorno = 0;
 
-	} else if(*estadoVuelo == 4){
-		auxEstadoVuelo = "Demorado";
+	} else if(estadoVuelo == 4){
+		strcpy(auxEstadoVuelo, "Demorado");
 		retorno = 0;
 
 	}
@@ -556,30 +557,30 @@ int Passenger_convierteEstadoVueloEnChar(int* estadoVuelo, char* auxEstadoVuelo)
 	return retorno;
 }
 
+
 /**
- * @brief
+ * @brief edita los campos del pasajero, permitiendole al usuario elegir que campo modificar
  *
  * @param pArrayListPassenger
- * @return
+ * @return devuelve 0 en caso de exito o -1 en caso de error.
  */
 int Passenger_editarPasajero (LinkedList* pArrayListPassenger) {
 	int retorno = -1;
 	int opcion = 0;
-	int idMaximo;
 	int idModificar;
 	int indice;
 	char auxNombre[50];
 	char auxApellido[50];
 	float auxPrecio;
-	char auxCodigoVuelo[8];
+	char auxCodigoVuelo[50];
 	int auxTipoPasajero;
 	int auxEstadoVuelo;
+	int maxValue = 2147483647;
 	Passenger *pPassenger = NULL;
 
 	if (pArrayListPassenger != NULL) {
 
-		idMaximo = Passenger_getMaxId(pArrayListPassenger);
-		utn_getNumero(&idModificar, "\n Ingrese el numero de id a modificar: ", "\nId inexistente. Reingrese: ", 1, idMaximo, 2);
+		utn_getNumero(&idModificar, "\nIngrese el numero de id a modificar: ", "\nId inexistente. Reingrese: ", 1, maxValue, 2);
 		indice = Passenger_findById(pArrayListPassenger, idModificar);
 
 		if (indice != -1) {
@@ -589,7 +590,7 @@ int Passenger_editarPasajero (LinkedList* pArrayListPassenger) {
 
 			do {
 				Passenger_SubMenu();
-				utn_getNumero(&opcion, "\n Ingrese un numero de operacion: ", "\nOpcion incorrecta. reingrese: ", 1, 7, 3);
+				utn_getNumero(&opcion, "\nIngrese un numero de operacion: ", "\nOpcion incorrecta. reingrese: ", 1, 7, 3);
 
 				switch (opcion) {
 					case 1:
@@ -613,17 +614,17 @@ int Passenger_editarPasajero (LinkedList* pArrayListPassenger) {
 						break;
 
 					case 4:
-						if (!utn_getNumero(&auxTipoPasajero, "\n1- FirstClass.\n2- ExecutiveClass.\n3- EconomyClass.\nIngrese clase de vuelo: ",
-								"\nClase erronea. Reingrese.", 1, 3, 2)) {
-							Passenger_setTipoPasajero(pPassenger, auxTipoPasajero);
-							printf("\nTipo de pasajero modificado correctamente.\n");
+						if (!utn_getDescripcion(auxCodigoVuelo, 50, "\nIngrese codigo de vuelo. (Hasta 8 caracteres): ", "Codigo erroneo. Reingrese.\n", 2)) {
+							Passenger_setCodigoVuelo(pPassenger, auxCodigoVuelo);
+							printf("\nCodigo de vuelo modificado correctamente.\n");
 						}
 						break;
 
 					case 5:
-						if (!utn_getDescripcion(auxCodigoVuelo, 50, "\nIngrese codigo de vuelo. (Hasta 8 caracteres): ", "Codigo erroneo. Reingrese.\n", 2)) {
-							Passenger_setCodigoVuelo(pPassenger, auxCodigoVuelo);
-							printf("\nCodigo de vuelo modificado correctamente.\n");
+						if (!utn_getNumero(&auxTipoPasajero, "\n1- FirstClass.\n2- ExecutiveClass.\n3- EconomyClass.\nIngrese clase de vuelo: ",
+								"\nClase erronea. Reingrese.", 1, 3, 2)) {
+							Passenger_setTipoPasajero(pPassenger, auxTipoPasajero);
+							printf("\nTipo de pasajero modificado correctamente.\n");
 						}
 						break;
 
@@ -638,6 +639,7 @@ int Passenger_editarPasajero (LinkedList* pArrayListPassenger) {
 					case 7:
 						break;
 				}
+				retorno = 0;
 			} while (opcion != 7);
 
 		}
@@ -646,11 +648,11 @@ int Passenger_editarPasajero (LinkedList* pArrayListPassenger) {
 }
 
 /**
- * @brief
+ * @brief encuentra un pasajero por numero de id
  *
  * @param pArrayListPassenger
  * @param id
- * @return
+ * @return retorna la posicion de memoria del pasajero del id indicado o -1 en caso de error
  */
 int Passenger_findById(LinkedList* pArrayListPassenger, int id){
 
@@ -673,11 +675,11 @@ int Passenger_findById(LinkedList* pArrayListPassenger, int id){
 
 
 /**
- * @brief
+ * @brief comparacion de pasajeros por id
  *
  * @param primerPasajero
  * @param segundoPasajero
- * @return
+ * @return Retorna 1 si el id del primer pasajero es mayor, -1 si es menor o 0 si son iguales.
  */
 int Passenger_OrdernarPorId(void* primerPasajero, void* segundoPasajero) {
 
@@ -705,11 +707,11 @@ int Passenger_OrdernarPorId(void* primerPasajero, void* segundoPasajero) {
 }
 
 /**
- * @brief
+ * @brief comparacion de pasajeros por nombre
  *
  * @param primerPasajero
  * @param segundoPasajero
- * @return
+ * @return Retorna 1 si el nombre del primer pasajero es mayor, -1 si es menor o 0 si son iguales.
  */
 int Passenger_ordenarPorNombre(void* primerPasajero, void* segundoPasajero) {
 
@@ -736,11 +738,11 @@ int Passenger_ordenarPorNombre(void* primerPasajero, void* segundoPasajero) {
 }
 
 /**
- * @brief
+ * @brief comparacion de psajeros por apellido
  *
  * @param primerPasajero
  * @param segundoPasajero
- * @return
+ * @return Retorna 1 si el apellido del primer pasajero es mayor, -1 si es menor o 0 si son iguales.
  */
 int Passenger_ordenarPorApellido(void* primerPasajero, void* segundoPasajero) {
 
@@ -768,11 +770,11 @@ int Passenger_ordenarPorApellido(void* primerPasajero, void* segundoPasajero) {
 }
 
 /**
- * @brief
+ * @brief comparacion de pasajeros por precio
  *
  * @param primerPasajero
  * @param segundoPasajero
- * @return
+ * @return Retorna 1 si el precio del primer pasajero es mayor, -1 si es menor o 0 si son iguales.
  */
 int Passenger_ordenarPorPrecio(void* primerPasajero, void* segundoPasajero) {
 
@@ -798,11 +800,138 @@ int Passenger_ordenarPorPrecio(void* primerPasajero, void* segundoPasajero) {
 	return retorno;
 }
 
+
 /**
- * @brief
+ * @brief comparacion de pasajeros por codigo de vuelo
+ *
+ * @param primerPasajero
+ * @param segundoPasajero
+ * @return Retorna 1 si el codigo de vuelo del primer pasajero es mayor, -1 si es menor o 0 si son iguales.
+ */
+int Passenger_ordenarPorCodigoVuelo(void* primerPasajero, void* segundoPasajero){
+
+	int retorno = 0;
+	Passenger* pPrimerPass = NULL;
+	Passenger* pSegundoPass = NULL;
+	char codigoVueloUno[50];
+	char codigoVueloDos[50];
+
+	if(primerPasajero != NULL && segundoPasajero != NULL){
+		pPrimerPass = (Passenger*) primerPasajero;
+		pSegundoPass = (Passenger*) segundoPasajero;
+		Passenger_getCodigoVuelo(pPrimerPass, codigoVueloUno);
+		Passenger_getCodigoVuelo(pSegundoPass, codigoVueloDos);
+		if(strcmp(codigoVueloUno, codigoVueloDos) > 0){
+			retorno = 1;
+		}
+		else if(strcmp(codigoVueloUno, codigoVueloDos) < 0){
+			retorno = -1;
+		}
+	}
+
+	return retorno;
+}
+
+/**
+ * @brief comparacioon de pasajeros por tipo de pasajero
+ *
+ * @param primerPasajero
+ * @param segundoPasajero
+ * @return Retorna 1 si el tipo de pasajero del primer pasajero es mayor, -1 si es menor o 0 si son iguales.
+ */
+int Passenger_ordenarPorTipoPasajero(void* primerPasajero, void* segundoPasajero){
+
+	int retorno = 0;
+	Passenger* pPrimerPass = NULL;
+	Passenger* pSegundoPass = NULL;
+	int tipoPasajeroUno;
+	int tipoPasajeroDos;
+	char tipoPasajeroUnoStr[50];
+	char tipoPasajeroDosStr[50];
+
+	if(primerPasajero != NULL && segundoPasajero != NULL){
+		pPrimerPass = (Passenger*) primerPasajero;
+		pSegundoPass = (Passenger*) segundoPasajero;
+		Passenger_getTipoPasajero(pPrimerPass, &tipoPasajeroUno);
+		Passenger_getTipoPasajero(pSegundoPass, &tipoPasajeroDos);
+
+		Passenger_convierteTipoVueloEnChar(tipoPasajeroUno, tipoPasajeroUnoStr);
+		Passenger_convierteTipoVueloEnChar(tipoPasajeroDos, tipoPasajeroDosStr);
+
+
+
+		if(strcmp(tipoPasajeroUnoStr, tipoPasajeroDosStr) > 0){
+			retorno = 1;
+		}
+		else if(strcmp(tipoPasajeroUnoStr, tipoPasajeroDosStr) < 0){
+			retorno = -1;
+		}
+	}
+	return retorno;
+}
+
+/**
+ * @brief comparacion de pasajeros por estado de vuelo
+ *
+ * @param primerPasajero
+ * @param segundoPasajero
+ * @return Retorna 1 si el estado de vuelo del primer pasajero es mayor, -1 si es menor o 0 si son iguales.
+ */
+int Passenger_ordenarPorEstadoVuelo(void* primerPasajero, void* segundoPasajero){
+
+	int retorno = 0;
+	Passenger* pPrimerPass = NULL;
+	Passenger* pSegundoPass = NULL;
+	int estadoVueloUno;
+	int estadoVueloDos;
+	char estadoVueloUnoStr[50];
+	char estadoVueloDosStr[50];
+
+	if(primerPasajero != NULL && segundoPasajero != NULL){
+		pPrimerPass = (Passenger*) primerPasajero;
+		pSegundoPass = (Passenger*) segundoPasajero;
+		Passenger_getEstadoVuelo(pPrimerPass, &estadoVueloUno);
+		Passenger_getEstadoVuelo(pSegundoPass, &estadoVueloDos);
+
+		Passenger_convierteEstadoVueloEnChar(estadoVueloUno, estadoVueloUnoStr);
+		Passenger_convierteEstadoVueloEnChar(estadoVueloDos, estadoVueloDosStr);
+
+		if(strcmp(estadoVueloUnoStr, estadoVueloDosStr) > 0){
+			retorno = 1;
+		}
+		else if(strcmp(estadoVueloUnoStr, estadoVueloDosStr) < 0){
+			retorno = -1;
+		}
+
+	}
+	return retorno;
+}
+
+/**
+ * @brief imprime la lista de pasajeros
  *
  * @param pArrayListPassenger
- * @return
+ * @return devuelve 0 en caso de exito o -1 en caso de error.
+ */
+int Passenger_ListPassenger(LinkedList* pArrayListPassenger)
+{
+	int retorno = -1;
+
+	if(pArrayListPassenger != NULL){
+		Passenger_Encabezado();
+		for(int i = 0; i < ll_len(pArrayListPassenger); i++){
+			Passenger_printPassenger(pArrayListPassenger, i);
+			retorno = 0;
+		}
+	}
+	return retorno;
+}
+
+/**
+ * @brief ordena pasajeros segun el criterio seleccionado por el usuario y en orden ascendente o descendente
+ *
+ * @param pArrayListPassenger
+ * @return devuelve 0 en caso de exito o -1 en caso de error.
  */
 int Passenger_ordenamiento(LinkedList* pArrayListPassenger){
 
@@ -813,62 +942,69 @@ int Passenger_ordenamiento(LinkedList* pArrayListPassenger){
 	if(pArrayListPassenger != NULL){
 		do{
 			Passenger_MenuOrdenamiento();
-			utn_getNumero(&opcion, "Ingrese la opcion seleccionada: \n", "opcion inexistente. Reintente", 1, 7, 2);
+			utn_getNumero(&opcion, "Ingrese la opcion seleccionada: \n", "opcion inexistente. Reintente", 1, 8, 2);
 
 			switch(opcion){
 				case 1:
-					if(!utn_getNumero(&orden, "\n0- Ascendente.\n1- Descendente.\nIndique el tipo de ordenamiento deseado: ",
+					if(!utn_getNumero(&orden, "\n0- Descendente.\n1- Ascendente.\nIndique el tipo de ordenamiento deseado: ",
 							"\nOpcion incorrecta\n", 0, 1, 2)){
+						printf("Aguarde, ordenamiento en curso...\n");
 						ll_sort(pArrayListPassenger, Passenger_OrdernarPorId, orden);
-						controller_ListPassenger(pArrayListPassenger);
+						Passenger_ListPassenger(pArrayListPassenger);
 					}
 					break;
 
 				case 2:
-					if(!utn_getNumero(&orden, "\n0- Ascendente.\n1- Descendente.\nIndique el tipo de ordenamiento deseado: ",
+					if(!utn_getNumero(&orden, "\n0- Descendente.\n1- Ascendente.\nIndique el tipo de ordenamiento deseado: ",
 							"\nOpcion incorrecta\n", 0, 1, 2)){
+						printf("Aguarde, ordenamiento en curso...\n");
 						ll_sort(pArrayListPassenger, Passenger_ordenarPorNombre, orden);
-						controller_ListPassenger(pArrayListPassenger);
+						Passenger_ListPassenger(pArrayListPassenger);
 					}
 					break;
 
 				case 3:
-					if(!utn_getNumero(&orden, "\n0- Ascendente.\n1- Descendente.\nIndique el tipo de ordenamiento deseado: ",
+					if(!utn_getNumero(&orden, "\n0- Descendente.\n1- Ascendente.\nIndique el tipo de ordenamiento deseado: ",
 							"\nOpcion incorrecta\n", 0, 1, 2)){
+						printf("Aguarde, ordenamiento en curso...\n");
 						ll_sort(pArrayListPassenger, Passenger_ordenarPorApellido, orden);
-						controller_ListPassenger(pArrayListPassenger);
+						Passenger_ListPassenger(pArrayListPassenger);
 					}
 					break;
 
 				case 4:
-					if(!utn_getNumero(&orden, "\n0- Ascendente.\n1- Descendente.\nIndique el tipo de ordenamiento deseado: ",
+					if(!utn_getNumero(&orden, "\n0- Descendente.\n1- Ascendente.\nIndique el tipo de ordenamiento deseado: ",
 							"\nOpcion incorrecta\n", 0, 1, 2)){
+						printf("Aguarde, ordenamiento en curso...\n");
 						ll_sort(pArrayListPassenger, Passenger_ordenarPorPrecio, orden);
-						controller_ListPassenger(pArrayListPassenger);
+						Passenger_ListPassenger(pArrayListPassenger);
 					}
 					break;
 
 				case 5:
-					if(!utn_getNumero(&orden, "\n0- Ascendente.\n1- Descendente.\nIndique el tipo de ordenamiento deseado: ",
+					if(!utn_getNumero(&orden, "\n0- Descendente.\n1- Ascendente.\nIndique el tipo de ordenamiento deseado: ",
 							"\nOpcion incorrecta\n", 0, 1, 2)){
-						//falta hacer - printf para prueba
-						printf("funcion sin realizar.");
+						printf("Aguarde, ordenamiento en curso...\n");
+						ll_sort(pArrayListPassenger, Passenger_ordenarPorCodigoVuelo, orden);
+						Passenger_ListPassenger(pArrayListPassenger);
 					}
 					break;
 
 				case 6:
-					if(!utn_getNumero(&orden, "\n0- Ascendente.\n1- Descendente.\nIndique el tipo de ordenamiento deseado: ",
+					if(!utn_getNumero(&orden, "\n0- Descendente.\n1- Ascendente.\nIndique el tipo de ordenamiento deseado: ",
 							"\nOpcion incorrecta\n", 0, 1, 2)){
-						//falta hacer - printf para prueba
-						printf("funcion sin realizar.");
+						printf("Aguarde, ordenamiento en curso...\n");
+						ll_sort(pArrayListPassenger, Passenger_ordenarPorTipoPasajero, orden);
+						Passenger_ListPassenger(pArrayListPassenger);;
 					}
 					break;
 
 				case 7:
-					if(!utn_getNumero(&orden, "\n0- Ascendente.\n1- Descendente.\nIndique el tipo de ordenamiento deseado: ",
+					if(!utn_getNumero(&orden, "\n0- Descendente.\n1- Ascendente.\nIndique el tipo de ordenamiento deseado: ",
 							"\nOpcion incorrecta\n", 0, 1, 2)){
-						//falta hacer - printf para prueba
-						printf("funcion sin realizar.");
+						printf("Aguarde, ordenamiento en curso...\n");
+						ll_sort(pArrayListPassenger, Passenger_ordenarPorEstadoVuelo, orden);
+						Passenger_ListPassenger(pArrayListPassenger);
 
 					}
 					break;
@@ -882,4 +1018,57 @@ int Passenger_ordenamiento(LinkedList* pArrayListPassenger){
 			printf("lista no valida.\n");
 		}
 	return retorno;
+}
+
+/**
+ * @brief obtiene el id maximo del archivo auxiliar
+ *
+ * @return devuelve -1 en caso de error o el numero de id en caso de exito
+ */
+int Passenger_getMaxIdtxt() {
+	int retorno = -1;
+	char auxId [50];
+
+	FILE* pFileTxt;
+
+	pFileTxt = fopen("ultimoId.txt", "r");
+
+	if (pFileTxt != NULL) {
+
+		fscanf(pFileTxt, "%[^\n]\n", auxId);
+
+		fclose(pFileTxt);
+
+		retorno = atoi(auxId);
+	}
+
+
+	return retorno;
+}
+
+/**
+ * @brief escribe el id en el archivo auxiliar
+ *
+ * @param id
+ * @return devuelve 0 en caso de exito o -1 en caso de error.
+ */
+int Passenger_writeMaxIdtxt(int id) {
+	int retorno = -1;
+
+	FILE* pFileTxt;
+
+	pFileTxt = fopen("ultimoId.txt", "w");
+
+	if (pFileTxt != NULL) {
+
+		fprintf(pFileTxt, "%d\n", id);
+
+		fclose(pFileTxt);
+
+		retorno = 0;
+	}
+
+
+	return retorno;
+
 }

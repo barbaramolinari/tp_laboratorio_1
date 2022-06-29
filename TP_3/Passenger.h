@@ -19,7 +19,7 @@ typedef struct
 	char nombre[50];
 	char apellido[50];
 	float precio;
-	char codigoVuelo[8];
+	char codigoVuelo[50];
 	int tipoPasajero;
 	int estadoVuelo;
 
@@ -29,6 +29,9 @@ Passenger* Passenger_new();
 
 Passenger* Passenger_newParametros(char* idStr,char* nombreStr, char* apellidoStr, char* precioStr,
 		char* codigoVueloStr, char* tipoPasajeroStr,  char* estadoVueloStr);
+
+Passenger* Passenger_newParamTipo(int id,char* nombreStr, char* apellidoStr, float precio,
+		char* codigoVueloStr, int tipoPasajero,  int estadoVuelo);
 
 void Passenger_delete();
 
@@ -58,11 +61,12 @@ void Passenger_Encabezado();
 void Passenger_MenuPrincipal();
 void Passenger_SubMenu();
 void Passenger_MenuOrdenamiento();
-int Passenger_getMaxId(LinkedList* pArrayListPassenger);
+int Passenger_getMaxIdtxt();
+int Passenger_writeMaxIdtxt(int id);
 int Passenger_convierteTipoVueloEnInt(char* tipoPasajero);
 int Passenger_convierteEstadoVueloEnInt(char* estadoVuelo);
-int Passenger_convierteTipoVueloEnChar(int* tipoPasajero, char* auxTipoPasajero);
-int Passenger_convierteEstadoVueloEnChar(int* estadoVuelo, char* auxEstadoVuelo);
+int Passenger_convierteTipoVueloEnChar(int tipoPasajero, char* auxTipoPasajero);
+int Passenger_convierteEstadoVueloEnChar(int estadoVuelo, char* auxEstadoVuelo);
 int Passenger_editarPasajero (LinkedList* pArrayListPassenger);
 int Passenger_findById(LinkedList* pArrayListPassenger, int id);
 int Passenger_ordenamiento(LinkedList* pArrayListPassenger);
@@ -70,6 +74,10 @@ int Passenger_OrdernarPorId(void* primerPasajero, void* segundoPasajero);
 int Passenger_ordenarPorNombre(void* primerPasajero, void* segundoPasajero);
 int Passenger_ordenarPorApellido(void* primerPasajero, void* segundoPasajero);
 int Passenger_ordenarPorPrecio(void* primerPasajero, void* segundoPasajero);
+int Passenger_ordenarPorCodigoVuelo(void* primerPasajero, void* segundoPasajero);
+int Passenger_ordenarPorTipoPasajero(void* primerPasajero, void* segundoPasajero);
+int Passenger_ordenarPorEstadoVuelo(void* primerPasajero, void* segundoPasajero);
+int Passenger_ListPassenger(LinkedList* pArrayListPassenger);
 
 
 

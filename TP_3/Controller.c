@@ -9,7 +9,7 @@
  *
  * \param path char*
  * \param pArrayListPassenger LinkedList*
- * \return int
+ * \return int devuelve 0 en caso de exito o -1 en caso de error.
  *
  */
 int controller_loadFromText(char* path , LinkedList* pArrayListPassenger)
@@ -39,7 +39,7 @@ int controller_loadFromText(char* path , LinkedList* pArrayListPassenger)
  *
  * \param path char*
  * \param pArrayListPassenger LinkedList*
- * \return int
+ * \return int devuelve 0 en caso de exito o -1 en caso de error.
  *
  */
 int controller_loadFromBinary(char* path , LinkedList* pArrayListPassenger)
@@ -53,6 +53,7 @@ int controller_loadFromBinary(char* path , LinkedList* pArrayListPassenger)
 		if (pFileBin != NULL) {
 			parser_PassengerFromBinary(pFileBin, pArrayListPassenger);
 			printf("Su lista ha sido cargada correctamente.\n ");
+			fclose(pFileBin);
 			retorno = 0;
 
 		} else {
@@ -61,16 +62,15 @@ int controller_loadFromBinary(char* path , LinkedList* pArrayListPassenger)
 	} else {
 		printf("parámetros inválidos. \n");
 	}
-	fclose(pFileBin);
+
 	return retorno;
 }
 
 
 /** \brief Alta de pasajero
  *
- * \param path char*
  * \param pArrayListPassenger LinkedList*
- * \return int
+ * \return int devuelve 0 en caso de exito o -1 en caso de error.
  *
  */
 int controller_addPassenger(LinkedList* pArrayListPassenger)
@@ -87,25 +87,24 @@ int controller_addPassenger(LinkedList* pArrayListPassenger)
 
 
 	if(pArrayListPassenger != NULL){
-		if (!utn_getNombre(auxNombre, 50, "\nIngrese el nombre: ", "\nNombre invalido. Reingrese.", 2) &&
+		siguienteId = Passenger_getMaxIdtxt() +1;
+		if (siguienteId > 0 && !utn_getNombre(auxNombre, 50, "\nIngrese el nombre: ", "\nNombre invalido. Reingrese.", 2) &&
 			!utn_getNombre(auxApellido, 50, "\nIngrese el apellido: ", "\nApellido invalido. Reingrese.", 2) &&
 			!utn_getNumeroFlotante(&auxPrecio, "\nIngrese el precio: $", "\nImporte invalido. Reingrese", 0, 3000000, 2) &&
 			!utn_getNumero(&auxTipoPasajero, "\n1- FirstClass.\n2- ExecutiveClass.\n3- EconomyClass.\nIngrese clase de vuelo: ", "\nClase erronea. Reingrese.", 1, 3, 2) &&
 			!utn_getDescripcion(auxCodigoVuelo, 50, "\nIngrese codigo de vuelo. (Hasta 8 caracteres): ", "Codigo erroneo. Reingrese.\n", 2) &&
 			!utn_getNumero(&auxEstadoVuelo, "\n1- En Horario.\n2- En Vuelo.\n3- Aterrizado.\n4- Demorado.\nIngrese estado de vuelo: ", "Estado erroneo. Reingrese.\n", 1, 4, 2)) {
 
-			pPassenger = Passenger_new();
-			siguienteId = Passenger_getMaxId(pArrayListPassenger) + 1;
-			Passenger_setId(pPassenger, siguienteId);
-			Passenger_setNombre(pPassenger, auxApellido);
-			Passenger_setApellido(pPassenger, auxNombre);
-			Passenger_setPrecio(pPassenger, auxPrecio);
-			Passenger_setTipoPasajero(pPassenger, auxTipoPasajero);
-			Passenger_setCodigoVuelo(pPassenger, auxCodigoVuelo);
-			Passenger_setEstadoVuelo(pPassenger, auxEstadoVuelo);
-			ll_add(pArrayListPassenger, pPassenger);
-			printf("\nPasajero dado de alta exitosamente.\n");
-			retorno = 0;
+			pPassenger = Passenger_newParamTipo(siguienteId, auxNombre, auxApellido, auxPrecio,
+					auxCodigoVuelo, auxTipoPasajero, auxEstadoVuelo);
+
+			if (pPassenger != NULL) {
+				ll_add(pArrayListPassenger, pPassenger);
+				Passenger_writeMaxIdtxt(siguienteId);
+				printf("\nPasajero dado de alta exitosamente.\n");
+				retorno = 0;
+			}
+
 		} else {
 			printf("\nNo se pudieron cargar los datos.\n");
 		}
@@ -115,9 +114,8 @@ int controller_addPassenger(LinkedList* pArrayListPassenger)
 
 /** \brief Modificar datos de pasajero
  *
- * \param path char*
  * \param pArrayListPassenger LinkedList*
- * \return int
+ * \return int devuelve 0 en caso de exito o -1 en caso de error.
  *
  */
 int controller_editPassenger(LinkedList* pArrayListPassenger)
@@ -133,24 +131,22 @@ int controller_editPassenger(LinkedList* pArrayListPassenger)
 
 /** \brief Baja de pasajero
  *
- * \param path char*
  * \param pArrayListPassenger LinkedList*
- * \return int
+ * \return int devuelve 0 en caso de exito o -1 en caso de error.
  *
  */
 int controller_removePassenger(LinkedList* pArrayListPassenger)
 {
 	int retorno = -1;
 	int opcion = 0;
-	int idMaximo;
+	int maxValue = 2147483647;
 	int idEliminar;
 	int indice;
 	Passenger* pPassenger = NULL;
 
 	if (pArrayListPassenger != NULL) {
 
-		idMaximo = Passenger_getMaxId(pArrayListPassenger);
-		utn_getNumero(&idEliminar, "\n Ingrese el numero de id a eliminar: ", "\nId inexistente. Reingrese: ", 1, idMaximo, 2);
+		utn_getNumero(&idEliminar, "\nIngrese el numero de id a eliminar: ", "\nId inexistente. Reingrese: ", 1, maxValue, 2);
 		indice = Passenger_findById(pArrayListPassenger, idEliminar);
 
 		if (indice != -1) {
@@ -164,10 +160,10 @@ int controller_removePassenger(LinkedList* pArrayListPassenger)
 			if (opcion == 1) {
 
 				ll_remove(pArrayListPassenger, indice);
-				printf("Empleado eliminado correctamente.");
+				printf("Pasajero eliminado correctamente.\n");
 				retorno = 0;
 			} else {
-				printf("Operación cancelada.");
+				printf("Operación cancelada.\n");
 			}
 		}
 	}
@@ -176,15 +172,13 @@ int controller_removePassenger(LinkedList* pArrayListPassenger)
 
 /** \brief Listar pasajeros
  *
- * \param path char*
  * \param pArrayListPassenger LinkedList*
- * \return int
+ * \return int devuelve 0 en caso de exito o -1 en caso de error.
  *
  */
 int controller_ListPassenger(LinkedList* pArrayListPassenger)
 {
 	int retorno = -1;
-	//Passenger* pPassenger = NULL;
 
 	if(pArrayListPassenger != NULL){
 		Passenger_Encabezado();
@@ -198,9 +192,8 @@ int controller_ListPassenger(LinkedList* pArrayListPassenger)
 
 /** \brief Ordenar pasajeros
  *
- * \param path char*
  * \param pArrayListPassenger LinkedList*
- * \return int
+ * \return int devuelve 0 en caso de exito o -1 en caso de error.
  *
  */
 int controller_sortPassenger(LinkedList* pArrayListPassenger)
@@ -219,7 +212,7 @@ int controller_sortPassenger(LinkedList* pArrayListPassenger)
  *
  * \param path char*
  * \param pArrayListPassenger LinkedList*
- * \return int
+ * \return int devuelve 0 en caso de exito o -1 en caso de error.
  *
  */
 int controller_saveAsText(char* path , LinkedList* pArrayListPassenger)
@@ -232,7 +225,7 @@ int controller_saveAsText(char* path , LinkedList* pArrayListPassenger)
 	char auxApellido[50];
 	float auxPrecio;
 	int auxTipoPasajero;
-	char auxCodigoVuelo[4];
+	char auxCodigoVuelo[50];
 	int auxEstadoVuelo;
 	char auxIdStr[50];
 	char auxTipoPasajeroStr[50];
@@ -249,6 +242,7 @@ int controller_saveAsText(char* path , LinkedList* pArrayListPassenger)
 		largo = ll_len(pArrayListPassenger);
 
 		if (pFileText != NULL){
+			fprintf(pFileText, "id,name,lastname,price,flycode,typePassenger,statusFlight \n");
 			for (i = 0; i < largo; i++){
 				pPassenger = ll_get(pArrayListPassenger, i);
 				Passenger_getId(pPassenger, &auxId);
@@ -259,20 +253,22 @@ int controller_saveAsText(char* path , LinkedList* pArrayListPassenger)
 				Passenger_getTipoPasajero(pPassenger, &auxTipoPasajero);
 				Passenger_getEstadoVuelo(pPassenger, &auxEstadoVuelo);
 
-				//casteo
-				sprintf(auxIdStr,"%d", auxId);
-				sprintf(auxPrecioStr,"%2.0f", auxPrecio);
-				Passenger_convierteTipoVueloEnChar(&auxTipoPasajero, auxTipoPasajeroStr);
-				Passenger_convierteEstadoVueloEnChar(&auxEstadoVuelo, auxEstadoVueloStr);
+
+				Passenger_convierteTipoVueloEnChar(auxTipoPasajero, auxTipoPasajeroStr);
+				Passenger_convierteEstadoVueloEnChar(auxEstadoVuelo, auxEstadoVueloStr);
 
 
-				fprintf(pFileText,"%s,%s,%s,%s,%s,%s,%s\n",auxIdStr,auxNombre,auxApellido,auxPrecioStr,auxCodigoVuelo,
+				fprintf(pFileText,"%d,%s,%s,%.2f,%s,%s,%s\n",auxId,auxNombre,auxApellido,auxPrecio,auxCodigoVuelo,
 						auxTipoPasajeroStr,auxEstadoVueloStr);
 			}
 		retorno = 0;
+		fclose(pFileText);
 		}
-	}
 
+	}
+	if (retorno == 0) {
+		printf("Lista modo texto guardada correctamente. \n");
+	}
     return retorno;
 }
 
@@ -281,7 +277,7 @@ int controller_saveAsText(char* path , LinkedList* pArrayListPassenger)
  *
  * \param path char*
  * \param pArrayListPassenger LinkedList*
- * \return int
+ * \return int devuelve 0 en caso de exito o -1 en caso de error.
  *
  */
 int controller_saveAsBinary(char* path , LinkedList* pArrayListPassenger)
@@ -290,14 +286,16 @@ int controller_saveAsBinary(char* path , LinkedList* pArrayListPassenger)
 	Passenger* pPassenger = NULL;
 	int retorno = -1;
 
+	int len = ll_len(pArrayListPassenger);
+
 	pFileBin = fopen(path, "wb");
 
 	if (pFileBin != NULL) {
 
 
-		for (int i = 0; i < ll_len(pArrayListPassenger); i++) {
+		for (int i = 0; i < len; i++) {
 
-			pPassenger = ll_get(pArrayListPassenger, i);
+			pPassenger = (Passenger*)ll_get(pArrayListPassenger, i);
 
 			if (pPassenger != NULL) {
 
@@ -305,11 +303,10 @@ int controller_saveAsBinary(char* path , LinkedList* pArrayListPassenger)
 				retorno = 0;
 			}
 		}
+		fclose(pFileBin);
+	}
+	if (retorno == 0) {
+		printf("Lista modo binario guardada correctamente. \n");
 	}
     return retorno;
 }
-
-
-
-
-

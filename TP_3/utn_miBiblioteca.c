@@ -43,7 +43,7 @@ int incrementarId()
 static int getString(char* cadena, int longitud)
 {
 	int retorno=-1;
-	char bufferString[4096]; // *****************************
+	char bufferString[4096];
 
 	if(cadena != NULL && longitud > 0)
 	{
@@ -63,6 +63,7 @@ static int getString(char* cadena, int longitud)
 	}
 	return retorno;
 }
+
 
 /**
  * \brief Obtiene un numero entero
@@ -228,7 +229,7 @@ int utn_getNumeroFlotante(float* pResultado, char* mensaje, char* mensajeError, 
 		printf("%s",mensaje);
 		if(getFloat(&bufferFloat) == 0)
 		{
-			if(bufferFloat >= minimo && bufferFloat <= maximo)
+			if(bufferFloat >= minimo && bufferFloat <= maximo && bufferFloat != '\0' && bufferFloat != ' ')
 			{
 				*pResultado = bufferFloat;
 				retorno = 0;
@@ -268,6 +269,7 @@ static int getNombre(char* pResultado, int longitud)
     return retorno;
 }
 
+
 /**
  * \brief Verifica que la cadena ingresada sea valida como nombre
  * \param cadena Cadena de caracteres a ser analizada
@@ -284,7 +286,7 @@ static int esNombre(char* cadena,int longitud)
 	{
 		for(i=0 ; cadena[i] != '\0' && i < longitud; i++)
 		{
-			if((cadena[i] < 'A' || cadena[i] > 'Z' ) && (cadena[i] < 'a' || cadena[i] > 'z' ))
+			if((cadena[i] < 'A' || cadena[i] > 'Z' ) && (cadena[i] < 'a' || cadena[i] > 'z' ) && (cadena[i] != ' '))
 			{
 				retorno = 0;
 				break;
@@ -312,7 +314,7 @@ int utn_getNombre(char* pResultado, int longitud,char* mensaje, char* mensajeErr
 	{
 		reintentos--;
 		printf("%s",mensaje);
-		if(getNombre(bufferString,sizeof(bufferString)) == 0 && strnlen(bufferString,sizeof(bufferString)) < longitud )
+		if(getNombre(bufferString,sizeof(bufferString)) == 0 && strnlen(bufferString,sizeof(bufferString)) < longitud && bufferString[0] != '\0' && bufferString[0] != ' ')
 		{
 			strncpy(pResultado,bufferString,longitud);
 			retorno = 0;
@@ -322,6 +324,7 @@ int utn_getNombre(char* pResultado, int longitud,char* mensaje, char* mensajeErr
 	}
 	return retorno;
 }
+
 
 
 /**
@@ -393,7 +396,7 @@ int utn_getDescripcion(char* pResultado, int longitud,char* mensaje, char* mensa
 	{
 		reintentos--;
 		printf("%s",mensaje);
-		if(getDescripcion(bufferString,sizeof(bufferString)) == 0 && strnlen(bufferString,sizeof(bufferString)) < longitud )
+		if(getDescripcion(bufferString,sizeof(bufferString)) == 0 && strnlen(bufferString,sizeof(bufferString)) < longitud && bufferString[0] != '\0' && bufferString[0] != ' ')
 		{
 			strncpy(pResultado,bufferString,longitud);
 			retorno = 0;
@@ -405,10 +408,10 @@ int utn_getDescripcion(char* pResultado, int longitud,char* mensaje, char* mensa
 }
 
 /**
- * @brief
+ * @brief valida numero entero
  *
- * @param numero
- * @return
+ * @param numero recibe una cadena numerica
+ * @return devuelve 0 en caso de exito o -1 en caso de error.
  */
 
 int validarNumeroEntero(char numero[]) {

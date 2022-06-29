@@ -24,39 +24,70 @@ int main()
 {
 	setbuf(stdout, NULL);
     int option = 0;
+    int flagCarga = 0;
+    int flagCargaUnitaria = 0;
 
     LinkedList* listaPasajeros = ll_newLinkedList();
+
     do{
     	Passenger_MenuPrincipal();
-    	utn_getNumero(&option, "\nIngrese un numero de operacion: ", "\nOpcion incorrecta. reingrese: ", 1, 10, 3);
+    	utn_getNumero(&option, "\nIngrese un numero de operacion: ", "\nOpcion incorrecta. reingrese por favor. ", 1, 10, 3);
         switch(option)
         {
             case 1:
-                controller_loadFromText("data.csv", listaPasajeros);
+                if (flagCarga == 0) {
+                	controller_loadFromText("data.csv", listaPasajeros);
+                	flagCarga = 1;
+                } else {
+                	printf("La lista ya ha sido cargada previamente. \n");
+                }
                 break;
 
             case 2:
-            	controller_loadFromBinary("data.bin", listaPasajeros);
+                if (flagCarga == 0) {
+                	controller_loadFromBinary("data.bin", listaPasajeros);
+                	flagCarga = 1;
+                } else {
+                	printf("La lista ya ha sido cargada previamente. \n");
+                }
                 break;
 
             case 3:
             	controller_addPassenger(listaPasajeros);
+            	flagCargaUnitaria = 1;
                 break;
 
             case 4:
-            	controller_editPassenger(listaPasajeros);
+            	if (flagCarga == 1 || flagCargaUnitaria == 1) {
+            		controller_editPassenger(listaPasajeros);
+            	} else {
+            		printf("Primero debe cargar un pasajero para modificarlo. \n");
+            	}
+
                 break;
 
             case 5:
+            	if (flagCarga == 1 || flagCargaUnitaria == 1) {
             	controller_removePassenger(listaPasajeros);
+            	} else {
+            		printf("Primero debe cargar un pasajero para eliminarlo. \n");
+            	}
                 break;
 
             case 6:
+            	if (flagCarga == 1 || flagCargaUnitaria == 1) {
             	controller_ListPassenger(listaPasajeros);
+            	} else {
+            		printf("Primero debe cargar un pasajero para visualizarlo. \n");
+            	}
                 break;
 
             case 7:
+            	if (flagCarga == 1 || flagCargaUnitaria == 1) {
             	controller_sortPassenger(listaPasajeros);
+            	} else {
+            		printf("Primero debe cargar pasajeros para ordenarlos. \n");
+            	}
                 break;
 
             case 8:
@@ -68,6 +99,7 @@ int main()
                 break;
 
             case 10:
+            	ll_deleteLinkedList(listaPasajeros);
             	printf("¡Hasta Luego! \n");
                 break;
         }
