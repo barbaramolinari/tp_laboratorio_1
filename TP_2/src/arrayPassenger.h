@@ -40,21 +40,13 @@ int removePassenger(Passenger* list, int len, int id);
 
 int sortPassengersByName(Passenger* list, int len, int order);
 
-int printPassengers(Passenger* list, int length);
+int printPassengers(Passenger* list, int len);
 
 int sortPassengersByCode(Passenger* list, int len, int order);
 
 int buscarIndexPorIsEmpty(Passenger* list, int len);
 
-int modificarNombre(Passenger* list, int indice);
-
-int modificarApellido(Passenger* list, int indice);
-
-int modificarPrecio(Passenger* list, int indice);
-
-int modificarTipoPasajero(Passenger* list, int indice);
-
-int modificarCodigoVuelo(Passenger* list, int indice);
+int modifyPassenger(Passenger* list, int len);
 
 int totalYPromedioVuelos(Passenger* list, float* precioTotal, float* precioPromedio, int len);
 
